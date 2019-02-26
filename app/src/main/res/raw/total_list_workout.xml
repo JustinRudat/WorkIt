@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<workouts>
+    <workout
+            name_workout="le Nom"
+            nb_etape="3">
+        <etape
+                nom_eta="Etapeux"
+                desc_eta="ne rien faire"
+                temps="30"
+                pause="45"></etape>
+        <etape
+                nom_eta="Etapeux2"
+                desc_eta="ne rien faire"
+                temps="30"
+                pause="45"></etape>
+        <etape
+                nom_eta="Etapeux3"
+                desc_eta="ne rien faire"
+                temps="30"
+                pause="45"></etape>
+    </workout>
+    <workout
+            name_workout="le Nom"
+            nb_etape="3">
+        <etape
+                nom_eta="Etapeux"
+                desc_eta="ne rien faire"
+                temps="30"
+                pause="45"></etape>
+        <etape
+                nom_eta="Etapeux2"
+                desc_eta="ne rien faire"
+                temps="30"
+                pause="45"></etape>
+        <etape
+                nom_eta="Etapeux3"
+                desc_eta="ne rien faire"
+                temps="30"
+                pause="45"></etape>
+    </workout>
+    <workout
+            name_workout="le Nom"
+            nb_etape="3">
+
+        <etape
+                nom_eta="Etapeux2"
+                desc_eta="ne rien faire"
+                temps="30"
+                pause="45"></etape>
+        <etape
+                nom_eta="Etapeux3"
+                desc_eta="ne rien faire"
+                temps="30"
+                pause="45"></etape>
+    </workout>
+</workouts>

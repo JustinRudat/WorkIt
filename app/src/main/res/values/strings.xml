@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">WorkIt</string>
+    <string name="app_name">WorkOut</string>
+    <string name="action_settings">Settings</string>
 </resources>
