@@ -74,4 +74,20 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.905"
             />
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_delete"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+
+            android:visibility="invisible"
+            android:onClick="buttonLongPressed"
+            android:layout_marginStart="248dp"
+            android:layout_marginLeft="248dp"
+            app:layout_constraintTop_toTopOf="@+id/textView_nom_showork"
+            app:layout_constraintStart_toEndOf="@+id/textView_nom_showork"
+            />
 </android.support.constraint.ConstraintLayout>
