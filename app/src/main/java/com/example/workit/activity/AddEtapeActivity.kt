@@ -61,7 +61,7 @@ abstract class AddEtapeActivity : AppCompatActivity() {
                 ArrayAdapter(this@AddEtapeActivity, android.R.layout.simple_list_item_1, array_etape_tmp)
             listView_add_etape.adapter = array_adapt_tmp
             listView_add_etape.setOnItemClickListener(
-                fun(arg0: AdapterView<*>, arg1: View, position: Int, arg3: Long) {
+                fun(_: AdapterView<*>, _: View, _: Int, arg3: Long) {
                     val intent_tmp = EditEtapeActivity.newIntent(this@AddEtapeActivity)
                     intent_tmp.putExtra(EXTRA_TYPE_ACTIVITY, "Add_etape")
                     intent_tmp.putExtra(EXTRA_POSITION_KEY, "" + arg3)
@@ -122,11 +122,11 @@ abstract class AddEtapeActivity : AppCompatActivity() {
                 listView_add_etape.adapter = array_adapt_tmp
 
                 listView_add_etape.setOnItemClickListener(
-                    fun(arg0: AdapterView<*>, arg1: View, position: Int, arg3: Long) {
-                        val intent_tmp = EditEtapeActivity.newIntent(this@AddEtapeActivity)
-                        intent_tmp.putExtra(EXTRA_TYPE_ACTIVITY, "Add_etape")
-                        intent_tmp.putExtra(EXTRA_POSITION_KEY, "" + arg3)
-                        startActivityForResult(intent_tmp, 1)
+                    fun(_: AdapterView<*>, _: View, _: Int, arg3: Long) {
+                        val intentTmp = EditEtapeActivity.newIntent(this@AddEtapeActivity)
+                        intentTmp.putExtra(EXTRA_TYPE_ACTIVITY, "Add_etape")
+                        intentTmp.putExtra(EXTRA_POSITION_KEY, "" + arg3)
+                        startActivityForResult(intentTmp, 1)
                     })
             }
         }
@@ -137,8 +137,8 @@ abstract class AddEtapeActivity : AppCompatActivity() {
         when (view.id) {
             R.id.button_workout_add -> {
                 val parser = XMLDOMParser(this)
-                val stream_file: FileInputStream
-                var writer: FileWriter? = null
+                val streamFile: FileInputStream
+                var writer: FileWriter?
                 try {
                     val file =
                         File(Environment.getExternalStorageDirectory().toString(), "/Workout/total_list_workout.xml")
@@ -154,10 +154,9 @@ abstract class AddEtapeActivity : AppCompatActivity() {
                         writer.flush()
 
                     } else {
-                        stream_file = FileInputStream(file)
+                        streamFile = FileInputStream(file)
 
-                        val doc = parser.getDocument(stream_file)
-
+                        val doc = parser.getDocument(streamFile)
 
                         val nodeList = doc!!.getElementsByTagName("workout")
                         val final_workouts = parser.getXMLWorkoutValue(nodeList)
