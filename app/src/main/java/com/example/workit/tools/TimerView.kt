@@ -13,8 +13,8 @@ import android.view.View
  */
 class TimerView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
-    private val paint: Paint
-    private val rect: RectF
+    val paint: Paint
+    val rect: RectF
 
     var angle: Float = 0.toFloat()
 
@@ -39,11 +39,6 @@ class TimerView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         //Initial Angle (optional, it can be zero)
         angle = 0f
-    }
-
-    fun setPaint(couleur: Int) {
-
-        paint.color = couleur
     }
 
     override fun onDraw(canvas: Canvas) {
