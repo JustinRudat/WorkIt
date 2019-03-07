@@ -15,28 +15,25 @@ import com.example.workit.R
 import com.example.workit.data.Etape
 import com.example.workit.data.Workout
 import com.example.workit.tools.XMLDOMParser
-import kotlinx.android.synthetic.main.activity_addetape.*
 import kotlinx.android.synthetic.main.content_addetape.*
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileWriter
-import java.util.*
 
 /**
  * Created by JustinRudat on 06/03/2019.
  */
-abstract class AddEtapeActivity : AppCompatActivity() {
-    internal val EXTRA_NOM_WORKOUT = "nom_du_workout"
-    internal val EXTRA_NOMBRE_ETAPES = "nombre_d_etape"
-    internal val EXTRA_NOM_ETAPE = "etape_string"
-    internal val EXTRA_DESC_ETAPE = "desc_string"
-    internal val EXTRA_TEMPS_ETAPE = "temps_string"
-    internal val EXTRA_PAUSE_ETAPE = "pause_string"
-    internal val EXTRA_TYPE_ACTIVITY = "activity_type"
-    internal val EXTRA_POSITION_KEY = "key_position"
-    var array_work: ArrayList<Workout>? = null
-    abstract var workout: Workout
-    internal abstract var array_etape_tmp: ArrayList<String>
+class AddEtapeActivity : AppCompatActivity() {
+    private val EXTRA_NOM_WORKOUT = "nom_du_workout"
+    private val EXTRA_NOMBRE_ETAPES = "nombre_d_etape"
+    private val EXTRA_NOM_ETAPE = "etape_string"
+    private val EXTRA_DESC_ETAPE = "desc_string"
+    private val EXTRA_TEMPS_ETAPE = "temps_string"
+    private val EXTRA_PAUSE_ETAPE = "pause_string"
+    private val EXTRA_TYPE_ACTIVITY = "activity_type"
+    private val EXTRA_POSITION_KEY = "key_position"
+    var workout: Workout = Workout(0, "default")
+    internal var array_etape_tmp: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,9 +67,6 @@ abstract class AddEtapeActivity : AppCompatActivity() {
                 }
             )
         }
-        setSupportActionBar(toolbar)
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

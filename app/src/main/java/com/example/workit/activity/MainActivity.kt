@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.example.workit.R
+import kotlinx.android.synthetic.main.content_main.*
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -75,10 +76,18 @@ class MainActivity : AppCompatActivity() {
 
 
     fun buttonPressed(view: View) {
-        when (view.id) {
-            R.id.showWorkout -> startActivity(ShowWorkActivity.newIntent(this))
-            R.id.addWorkout -> startActivity(AddWorkoutActivity.newIntent(this))
-            R.id.button_quit -> finish()
+        print("HEY")
+        when (view) {
+            showWorkout -> {
+                val intent = ShowWorkActivity.newIntent(this@MainActivity)
+                startActivity(intent)
+            }
+            addWorkout -> {
+                print("YO")
+                val intent = AddWorkoutActivity.newIntent(this@MainActivity)
+                startActivity(intent)
+            }
+            button_quit -> finish()
         }
     }
 

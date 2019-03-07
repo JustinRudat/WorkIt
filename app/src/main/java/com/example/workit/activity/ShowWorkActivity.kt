@@ -108,17 +108,16 @@ class ShowWorkActivity : AppCompatActivity() {
     }
 
     fun buttonPressed(view: View) {
-        when (view.id) {
-            R.id.button_back_showork -> finish()
+        when (view) {
+            button_back_showork -> finish()
         }
     }
 
 
 
-    //TODO
     fun buttonLongPressed(v: View) {
-        when (v.id) {
-            R.id.imageButton_delete -> {
+        when (v) {
+            imageButton_delete -> {
                 val parser = XMLDOMParser(applicationContext)
 
                 println(intent.getStringExtra(EXTRA_POSITION_CHOICE))
