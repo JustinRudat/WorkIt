@@ -1,7 +1,6 @@
 package com.example.workit.activity
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -13,18 +12,19 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.example.workit.R
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
 
+/**
+ * Created by JustinRudat on 06/03/2019.
+ */
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkStoragePermission();
-        setSupportActionBar(toolbar);
         val f1 = File(Environment.getExternalStorageDirectory().toString() + File.separator + "Workout")
         f1.mkdirs()
         //String str=Environment.getExternalStorageDirectory().toString()+File.separator+"Workout"+File.separator+"total_list_workout.xml";
@@ -76,9 +76,8 @@ class MainActivity : AppCompatActivity() {
 
     fun buttonPressed(view: View) {
         when (view.id) {
-            R.id.showWorkout -> startActivity(Intent(this, ShowWorkActivity::class.java))
-            R.id.addWorkout -> startActivity(Intent(this, AddWorkoutActivity::class.java))
-
+            R.id.showWorkout -> startActivity(ShowWorkActivity.newIntent(this))
+            R.id.addWorkout -> startActivity(AddWorkoutActivity.newIntent(this))
             R.id.button_quit -> finish()
         }
     }

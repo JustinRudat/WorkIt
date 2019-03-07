@@ -1,19 +1,19 @@
 package com.example.workit.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.text.InputFilter
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import com.example.workit.R
+import kotlinx.android.synthetic.main.content_addworkout.*
 
 /**
- * Created by juju_ on 19/08/2016.
+ * Created by JustinRudat on 06/03/2019.
  */
 class AddWorkoutActivity : AppCompatActivity() {
     internal val EXTRA_NOM_WORKOUT = "nom_du_workout"
@@ -21,16 +21,13 @@ class AddWorkoutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addworkout)
-        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-        val le_name_workout = findViewById<View>(R.id.new_training_name) as EditText
         val filter = InputFilter { source, start, end, dest, dstart, dend ->
             val blockCharacterSet = "&~#^|$%*!@/()'\"\\:;,?{}<>=!$^';,?×÷{}€£¥₩%~`¤♡♥|《》¡¿°•○●□■◇◆♧♣▲▼▶◀↑↓←→☆★▪"
             if (source != null && blockCharacterSet.contains("" + source)) {
                 ""
             } else null
         }
-        le_name_workout.filters = arrayOf(filter)
+        new_training_name.filters = arrayOf(filter)
 
     }
 
@@ -50,8 +47,6 @@ class AddWorkoutActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
-
-
         return if (id == R.id.action_settings) {
             true
         } else super.onOptionsItemSelected(item)
@@ -64,20 +59,18 @@ class AddWorkoutActivity : AppCompatActivity() {
 
             R.id.add_etape_workout_button -> {
                 val toast = Toast.makeText(applicationContext, "", Toast.LENGTH_SHORT)
-                val nom_workout = findViewById<View>(R.id.new_training_name) as EditText
-                val nombre_etape = findViewById<View>(R.id.nombre_d_etape) as EditText
-                if (nom_workout != null && nombre_etape != null) {
-                    if (nom_workout.text.toString() == "") {
+                if (new_training_name != null && nombre_d_etape != null) {
+                    if (new_training_name.text.toString() == "") {
                         toast.setText("Name missing")
                         toast.show()
                     } else
-                        if (nombre_etape.text.toString() == "" || Integer.parseInt(nombre_etape.text.toString()) == 0) {
+                        if (nombre_d_etape.text.toString() == "" || Integer.parseInt(nombre_d_etape.text.toString()) == 0) {
                             toast.setText("No exercices for a training ?\n Are you sure about that ?")
                             toast.show()
                         } else {
-                            val intent = Intent(this@AddWorkoutActivity, AddEtapeActivity::class.java)
-                            intent.putExtra(EXTRA_NOM_WORKOUT, nom_workout.text.toString())
-                            intent.putExtra(EXTRA_NOMBRE_ETAPES, nombre_etape.text.toString())
+                            val intent = AddEtapeActivity.newIntent(this@AddWorkoutActivity)
+                            intent.putExtra(EXTRA_NOM_WORKOUT, new_training_name.text.toString())
+                            intent.putExtra(EXTRA_NOMBRE_ETAPES, nombre_d_etape.text.toString())
                             startActivity(intent)
                         }
                 } else {
@@ -85,6 +78,12 @@ class AddWorkoutActivity : AppCompatActivity() {
                     toast.show()
                 }
             }
+        }
+    }
+
+    companion object {
+        fun newIntent(context: Context): Intent {
+            return Intent(context, AddWorkoutActivity::class.java)
         }
     }
 }

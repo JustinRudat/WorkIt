@@ -1,30 +1,32 @@
 package com.example.workit.activity
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.Toast
 import com.example.workit.R
 import com.example.workit.adapter.TrainingAdapter
 import com.example.workit.data.Etape
 import com.example.workit.tools.TimerEtapeAnimation
 import com.example.workit.tools.TimerView
 import com.example.workit.tools.XMLDOMParser
-
+import kotlinx.android.synthetic.main.content_show_training.*
+import kotlinx.android.synthetic.main.simple_textview_perso.*
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 
 /**
- * Created by juju_ on 22/08/2016.
+ * Created by JustinRudat on 06/03/2019.
  */
 class ShowTrainingActivity : AppCompatActivity() {
     internal val EXTRA_POSITION_CHOICE = "0"
@@ -42,27 +44,22 @@ class ShowTrainingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_training)
-        val rl_toto = findViewById<View>(R.id.total_view_show_train) as RelativeLayout
-        rl_toto?.setOnClickListener {
+        total_view_show_train?.setOnClickListener {
             if (isUp) {
-                val rl_tmp = findViewById<View>(R.id.rel_layout_edit_train) as RelativeLayout
-                if (rl_tmp != null) {
+                if (rel_layout_edit_train != null) {
                     if (Build.VERSION.SDK_INT >= 21) {
-                        if (rl_tmp != null) {
-                            rl_tmp.translationY = 200f
+                        if (rel_layout_edit_train != null) {
+                            rel_layout_edit_train.translationY = 200f
                             isUp = false
                         }
                     }
                 }
             }
         }
-        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-        val listV = findViewById<View>(R.id.listView_show_training) as ListView
-        val rl_tmp = findViewById<View>(R.id.rel_layout_edit_train) as RelativeLayout
+
         if (Build.VERSION.SDK_INT >= 21) {
-            if (rl_tmp != null) {
-                rl_tmp.z = 5f
+            if (rel_layout_edit_train != null) {
+                rel_layout_edit_train.z = 5f
             }
         }
         // parser le doc des workout
@@ -86,24 +83,23 @@ class ShowTrainingActivity : AppCompatActivity() {
 
             val final_workouts = parser.getXMLWorkoutValue(nodeList)
             val wo_tmp = final_workouts[position]
-            val txtV_nom = findViewById<View>(R.id.textView_lrg_training_name) as TextView
-            if (txtV_nom != null) {
-                txtV_nom.text = wo_tmp.toString()
+            if (textView_lrg_training_name != null) {
+                textView_lrg_training_name.text = wo_tmp.toString()
             }
 
             val adapter = TrainingAdapter(this@ShowTrainingActivity, wo_tmp.list_etape)
-            if (listV != null) {
-                listV.adapter = adapter
+            if (listView_show_training != null) {
+                listView_show_training.adapter = adapter
 
 
-                listV.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                listView_show_training.onItemClickListener =
+                    AdapterView.OnItemClickListener { parent, view, position, id ->
                     val toast = Toast.makeText(applicationContext, "", Toast.LENGTH_LONG)
                     if (isUp) {
-                        val rl_tmp = findViewById<View>(R.id.rel_layout_edit_train) as RelativeLayout
-                        if (rl_tmp != null) {
+                        if (rel_layout_edit_train != null) {
                             if (Build.VERSION.SDK_INT >= 21) {
-                                if (rl_tmp != null) {
-                                    rl_tmp.translationY = 200f
+                                if (rel_layout_edit_train != null) {
+                                    rel_layout_edit_train.translationY = 200f
                                     isUp = false
                                 }
                             }
@@ -111,25 +107,22 @@ class ShowTrainingActivity : AppCompatActivity() {
                     }
                     if (Build.VERSION.SDK_INT >= 16) {
                         //Permet de ne pas recycler la vue de l'animation en cours d'execution(animation timer multiple)
-
                         view.setHasTransientState(true)
 
-
                     }
-                    listV.isEnabled = false
+                        listView_show_training.isEnabled = false
 
-                    //listV.setScrollContainer(false);
-                    view.findViewById<View>(R.id.textView_go).visibility = View.GONE
+                        //listView_show_training.setScrollContainer(false);
+
+                        textView_go.visibility = View.GONE
                     view.setOnClickListener(null)
                     val pos = id.toInt()
-                    val tmr_view = view.findViewById<View>(R.id.time_etape_view) as TimerView
 
-
-                    if (tmr_view != null) {
+                        if (time_etape_view != null) {
                         toast.setText("GO")
                         toast.show()
-
-                        val tmr_etp_anim = TimerEtapeAnimation(tmr_view, 360)
+                            var timeEtapeView = time_etape_view as TimerView
+                            val tmr_etp_anim = TimerEtapeAnimation(timeEtapeView, 360)
                         tmr_etp_anim.duration = (wo_tmp.list_etape[pos].temps * 1000).toLong()
                         tmr_etp_anim.setAnimationListener(object : Animation.AnimationListener {
                             override fun onAnimationStart(animation: Animation) {
@@ -137,53 +130,52 @@ class ShowTrainingActivity : AppCompatActivity() {
                             }
 
                             override fun onAnimationEnd(animation: Animation) {
-                                tmr_view.setPaint(Color.rgb(254, 195, 1))
+                                timeEtapeView.paint.color = Color.rgb(254, 195, 1)
                                 toast.setText("Now rest time")
                                 toast.show()
-                                tmr_view.clearAnimation()
-                                tmr_view.angle = 0f
-                                val tmr_etp_anim_2 = TimerEtapeAnimation(tmr_view, 360)
+                                timeEtapeView.clearAnimation()
+                                timeEtapeView.angle = 0f
+                                val tmr_etp_anim_2 = TimerEtapeAnimation(timeEtapeView, 360)
                                 tmr_etp_anim_2.duration = (wo_tmp.list_etape[pos].pause * 1000).toLong()
                                 tmr_etp_anim_2.setAnimationListener(object : Animation.AnimationListener {
                                     override fun onAnimationStart(animation: Animation) {}
 
                                     override fun onAnimationEnd(animation: Animation) {
-                                        tmr_view.setPaint(Color.rgb(19, 142, 0))
+                                        timeEtapeView.paint.color = Color.rgb(19, 142, 0)
 
                                         toast.setText("Done")
                                         toast.show()
-                                        tmr_view.clearAnimation()
-                                        tmr_view.angle = 0f
-                                        val tmr_etp_anim_3 = TimerEtapeAnimation(tmr_view, 360)
+                                        timeEtapeView.clearAnimation()
+                                        timeEtapeView.angle = 0f
+                                        val tmr_etp_anim_3 = TimerEtapeAnimation(timeEtapeView, 360)
                                         tmr_etp_anim_3.duration = 200
 
-                                        tmr_view.startAnimation(tmr_etp_anim_3)
+                                        timeEtapeView.startAnimation(tmr_etp_anim_3)
                                         if (Build.VERSION.SDK_INT >= 16) {
                                             view.setHasTransientState(true)
                                         }
-                                        listV.isEnabled = true
+                                        listView_show_training.isEnabled = true
 
                                     }
 
                                     override fun onAnimationRepeat(animation: Animation) {}
                                 })
 
-                                tmr_view.startAnimation(tmr_etp_anim_2)
+                                timeEtapeView.startAnimation(tmr_etp_anim_2)
                             }
 
                             override fun onAnimationRepeat(animation: Animation) {}
                         })
 
-                        tmr_view.startAnimation(tmr_etp_anim)
+                            timeEtapeView.startAnimation(tmr_etp_anim)
 
                     }
                 }
-                listV.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
-                    val rl_tmp = findViewById<View>(R.id.rel_layout_edit_train) as RelativeLayout
+                listView_show_training.onItemLongClickListener =
+                    AdapterView.OnItemLongClickListener { parent, view, position, id ->
                     if (Build.VERSION.SDK_INT >= 21) {
-                        if (rl_tmp != null) {
-
-                            rl_tmp.translationY = -200f
+                        if (rel_layout_edit_train != null) {
+                            rel_layout_edit_train.translationY = -200f
                             isUp = true
                         }
                     }
@@ -201,20 +193,17 @@ class ShowTrainingActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         try {
-            val lst_view_tmp = findViewById<View>(R.id.listView_show_training) as ListView
             if (resultCode == 1) {
                 val name_etape_tmp: String?
                 val desc_etape_tmp: String
                 val temps_etape_tmp: Int
                 val pause_etape_tmp: Int
-                val rl_toto = findViewById<View>(R.id.total_view_show_train) as RelativeLayout
-                rl_toto?.setOnClickListener {
+                total_view_show_train?.setOnClickListener {
                     if (isUp) {
-                        val rl_tmp = findViewById<View>(R.id.rel_layout_edit_train) as RelativeLayout
-                        if (rl_tmp != null) {
+                        if (rel_layout_edit_train != null) {
                             if (Build.VERSION.SDK_INT >= 21) {
-                                if (rl_tmp != null) {
-                                    rl_tmp.translationY = 200f
+                                if (rel_layout_edit_train != null) {
+                                    rel_layout_edit_train.translationY = 200f
                                     isUp = false
                                 }
                             }
@@ -251,90 +240,84 @@ class ShowTrainingActivity : AppCompatActivity() {
                         val train_adap =
                             TrainingAdapter(applicationContext, workout.list_etape)
 
-                        val lstview = findViewById<View>(R.id.listView_add_etape) as ListView
-                        lst_view_tmp.adapter = train_adap
-                        lst_view_tmp.onItemClickListener =
+                        listView_show_training.adapter = train_adap
+                        listView_show_training.onItemClickListener =
                             AdapterView.OnItemClickListener { parent, view, position, id ->
                                 if (isUp) {
-                                    val rl_tmp = findViewById<View>(R.id.rel_layout_edit_train) as RelativeLayout
-                                    if (rl_tmp != null) {
+                                    if (rel_layout_edit_train != null) {
                                         if (Build.VERSION.SDK_INT >= 21) {
-                                            if (rl_tmp != null) {
-                                                rl_tmp.translationY = 200f
+                                            if (rel_layout_edit_train != null) {
+                                                rel_layout_edit_train.translationY = 200f
                                                 isUp = false
                                             }
                                         }
                                     }
                                 }
                                 val toast = Toast.makeText(applicationContext, "", Toast.LENGTH_LONG)
-                                view.findViewById<View>(R.id.textView_go).visibility = View.GONE
+                                textView_go.visibility = View.GONE
                                 view.setOnClickListener(null)
                                 val pos = id.toInt()
-                                val tmr_view = view.findViewById<View>(R.id.time_etape_view) as TimerView
-                                if (tmr_view != null) {
-                                    val lst_view_tmp = findViewById<View>(R.id.listView_show_training) as ListView
-                                    if (lst_view_tmp != null) {
-                                        lst_view_tmp.isEnabled = false
+                                if (time_etape_view != null) {
+                                    if (listView_show_training != null) {
+                                        listView_show_training.isEnabled = false
                                     }
                                     toast.setText("GO")
                                     toast.show()
+                                    val timeEtapeView = time_etape_view as TimerView
 
-                                    val tmr_etp_anim = TimerEtapeAnimation(tmr_view, 360)
+                                    val tmr_etp_anim = TimerEtapeAnimation(timeEtapeView, 360)
                                     tmr_etp_anim.duration =
                                         (workout.list_etape[position].temps * 1000).toLong()
                                     tmr_etp_anim.setAnimationListener(object : Animation.AnimationListener {
                                         override fun onAnimationStart(animation: Animation) {}
 
                                         override fun onAnimationEnd(animation: Animation) {
-                                            tmr_view.setPaint(Color.rgb(254, 195, 1))
+                                            timeEtapeView.paint.color = Color.rgb(254, 195, 1)
                                             toast.setText("Now rest time")
                                             toast.show()
-                                            tmr_view.clearAnimation()
-                                            tmr_view.angle = 0f
+                                            timeEtapeView.clearAnimation()
+                                            timeEtapeView.angle = 0f
                                             val tmr_etp_anim_2 =
-                                                TimerEtapeAnimation(tmr_view, 360)
+                                                TimerEtapeAnimation(timeEtapeView, 360)
                                             tmr_etp_anim_2.duration =
                                                 (workout.list_etape[pos].pause * 1000).toLong()
                                             tmr_etp_anim_2.setAnimationListener(object : Animation.AnimationListener {
                                                 override fun onAnimationStart(animation: Animation) {}
 
                                                 override fun onAnimationEnd(animation: Animation) {
-                                                    val lst_view_tmp =
-                                                        findViewById<View>(R.id.listView_show_training) as ListView
-                                                    if (lst_view_tmp != null) {
-                                                        lst_view_tmp.isEnabled = true
+                                                    if (listView_show_training != null) {
+                                                        listView_show_training.isEnabled = true
                                                     }
-                                                    tmr_view.setPaint(Color.rgb(19, 142, 0))
+                                                    timeEtapeView.paint.color = Color.rgb(19, 142, 0)
                                                     toast.setText("Done")
                                                     toast.show()
-                                                    tmr_view.clearAnimation()
-                                                    tmr_view.angle = 0f
+                                                    timeEtapeView.clearAnimation()
+                                                    timeEtapeView.angle = 0f
                                                     val tmr_etp_anim_3 =
-                                                        TimerEtapeAnimation(tmr_view, 360)
+                                                        TimerEtapeAnimation(timeEtapeView, 360)
                                                     tmr_etp_anim_3.duration = 200
-                                                    tmr_view.startAnimation(tmr_etp_anim_3)
+                                                    timeEtapeView.startAnimation(tmr_etp_anim_3)
 
                                                 }
 
                                                 override fun onAnimationRepeat(animation: Animation) {}
                                             })
 
-                                            tmr_view.startAnimation(tmr_etp_anim_2)
+                                            timeEtapeView.startAnimation(tmr_etp_anim_2)
                                         }
 
                                         override fun onAnimationRepeat(animation: Animation) {}
                                     })
 
-                                    tmr_view.startAnimation(tmr_etp_anim)
+                                    timeEtapeView.startAnimation(tmr_etp_anim)
 
                                 }
                             }
-                        lst_view_tmp.onItemLongClickListener =
+                        listView_show_training.onItemLongClickListener =
                             AdapterView.OnItemLongClickListener { parent, view, position, id ->
-                                val rl_tmp = findViewById<View>(R.id.rel_layout_edit_train) as RelativeLayout
                                 if (Build.VERSION.SDK_INT >= 21) {
-                                    if (rl_tmp != null) {
-                                        rl_tmp.translationY = -200f
+                                    if (rel_layout_edit_train != null) {
+                                        rel_layout_edit_train.translationY = -200f
                                         isUp = true
                                     }
                                 }
@@ -371,36 +354,27 @@ class ShowTrainingActivity : AppCompatActivity() {
     }
 
     fun buttonPressed(view: View) {
-        val rl_tmp: RelativeLayout?
         when (view.id) {
             R.id.button_back_showtrain -> {
-                val lst_tmp = findViewById<View>(R.id.listView_show_training) as ListView
-                if (lst_tmp != null) {
-                    if (!lst_tmp.isEnabled)
-                        lst_tmp.isEnabled = true
+                if (listView_show_training != null) {
+                    if (!listView_show_training.isEnabled)
+                        listView_show_training.isEnabled = true
                 }
                 finish()
             }
 
             R.id.button_back_transit -> {
-                rl_tmp = findViewById<View>(R.id.rel_layout_edit_train) as RelativeLayout
-                if (rl_tmp != null) {
                     if (Build.VERSION.SDK_INT >= 21) {
-                        if (rl_tmp != null) {
-                            rl_tmp.translationY = 200f
-                            isUp = false
-                        }
+                        rel_layout_edit_train.translationY = 200f
+                        isUp = false
                     }
-
-                }
             }
 
             R.id.button_edit_transit -> {
-                rl_tmp = findViewById<View>(R.id.rel_layout_edit_train) as RelativeLayout
-                if (rl_tmp != null) {
+                if (rel_layout_edit_train != null) {
                     if (Build.VERSION.SDK_INT >= 21) {
-                        if (rl_tmp != null) {
-                            rl_tmp.translationY = 200f
+                        if (rel_layout_edit_train != null) {
+                            rel_layout_edit_train.translationY = 200f
                             isUp = false
                         }
                     }
@@ -411,6 +385,12 @@ class ShowTrainingActivity : AppCompatActivity() {
                 intent.putExtra(EXTRA_POSITION_CHOICE, getIntent().getStringExtra(EXTRA_POSITION_CHOICE))
                 startActivityForResult(intent, 1)
             }
+        }
+    }
+
+    companion object {
+        fun newIntent(context: Context): Intent {
+            return Intent(context, ShowTrainingActivity::class.java)
         }
     }
 

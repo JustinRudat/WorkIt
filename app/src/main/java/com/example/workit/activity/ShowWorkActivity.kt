@@ -1,34 +1,31 @@
 package com.example.workit.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ImageButton
-import android.widget.ListView
 import com.example.workit.R
 import com.example.workit.adapter.WorkoutAdapter
 import com.example.workit.tools.XMLDOMParser
+import kotlinx.android.synthetic.main.content_showork.*
+import kotlinx.android.synthetic.main.white_text_cell.*
 import java.io.File
 import java.io.FileInputStream
 import java.util.*
 
 /**
- * Created by juju_ on 19/08/2016.
+ * Created by JustinRudat on 06/03/2019.
  */
 class ShowWorkActivity : AppCompatActivity() {
     internal val EXTRA_POSITION_CHOICE = "0"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showork)
-        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-        val listV = findViewById<View>(R.id.workoutListView) as ListView
 
         // parser le doc des workout
         val parser = XMLDOMParser(this)
@@ -53,8 +50,8 @@ class ShowWorkActivity : AppCompatActivity() {
                 ) { o1, o2 -> o1.toString().compareTo(o2.toString()) }
 
                 val adapter = WorkoutAdapter(this@ShowWorkActivity, final_workouts)
-                if (listV != null) {
-                    listV.onItemClickListener = AdapterView.OnItemClickListener(fun(
+                if (workoutListView != null) {
+                    workoutListView.onItemClickListener = AdapterView.OnItemClickListener(fun(
                         arg0: AdapterView<*>,
                         arg1: View,
                         position: Int,
@@ -66,20 +63,20 @@ class ShowWorkActivity : AppCompatActivity() {
                         startActivity(intent)
                     })
 
-                    listV.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, id ->
-                        val img_buton_tmp = view.findViewById<View>(R.id.imageButton_delete) as ImageButton
-                        if (img_buton_tmp != null) {
-                            if (img_buton_tmp.visibility == View.INVISIBLE) {
-                                img_buton_tmp.visibility = View.VISIBLE
+                    workoutListView.onItemLongClickListener =
+                        AdapterView.OnItemLongClickListener { parent, view, position, id ->
+                            if (imageButton_delete != null) {
+                                if (imageButton_delete.visibility == View.INVISIBLE) {
+                                    imageButton_delete.visibility = View.VISIBLE
                             } else {
-                                img_buton_tmp.visibility = View.INVISIBLE
+                                    imageButton_delete.visibility = View.INVISIBLE
                             }
                         }
                         val str_tmp = "" + id
                         intent.putExtra(EXTRA_POSITION_CHOICE, str_tmp)
                         true
                     }
-                    listV.adapter = adapter
+                    workoutListView.adapter = adapter
 
                 }
             }
@@ -117,6 +114,7 @@ class ShowWorkActivity : AppCompatActivity() {
     }
 
 
+
     //TODO
     fun buttonLongPressed(v: View) {
         when (v.id) {
@@ -127,15 +125,20 @@ class ShowWorkActivity : AppCompatActivity() {
 
                 val array_wo_tmp =
                     parser.deleteWorkoutByNumber(Integer.parseInt(intent.getStringExtra(EXTRA_POSITION_CHOICE)), v)
-                val lv_tmp = findViewById<View>(R.id.workoutListView) as ListView
-                val wo_adapt_tmp = lv_tmp.adapter as WorkoutAdapter
+                val wo_adapt_tmp = workoutListView.adapter as WorkoutAdapter
                 wo_adapt_tmp.clear()
                 wo_adapt_tmp.addAll(array_wo_tmp!!)
                 wo_adapt_tmp.notifyDataSetChanged()
 
-                val img_but_del_tmp = v.findViewById<View>(R.id.imageButton_delete) as ImageButton
-                img_but_del_tmp.visibility = View.INVISIBLE
+                imageButton_delete.visibility = View.INVISIBLE
             }
         }
     }
+
+    companion object {
+        fun newIntent(context: Context): Intent {
+            return Intent(context, ShowWorkActivity::class.java)
+        }
+    }
 }
+

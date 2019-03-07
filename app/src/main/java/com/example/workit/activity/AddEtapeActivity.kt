@@ -1,5 +1,6 @@
 package com.example.workit.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
@@ -19,11 +20,10 @@ import kotlinx.android.synthetic.main.content_addetape.*
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileWriter
-import java.io.InputStream
 import java.util.*
 
 /**
- * Created by juju_ on 19/08/2016.
+ * Created by JustinRudat on 06/03/2019.
  */
 abstract class AddEtapeActivity : AppCompatActivity() {
     internal val EXTRA_NOM_WORKOUT = "nom_du_workout"
@@ -41,11 +41,6 @@ abstract class AddEtapeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addetape)
-
-
-        val intent = intent
-        val textView1_add_etape = textView1_add_etape
-        val textView2_add_etape = textView2_add_etape
 
         if (intent != null) {
             textView1_add_etape.text = intent.getStringExtra(EXTRA_NOM_WORKOUT)
@@ -67,7 +62,7 @@ abstract class AddEtapeActivity : AppCompatActivity() {
             listView_add_etape.adapter = array_adapt_tmp
             listView_add_etape.setOnItemClickListener(
                 fun(arg0: AdapterView<*>, arg1: View, position: Int, arg3: Long) {
-                    val intent_tmp = Intent(this@AddEtapeActivity, EditEtapeActivity::class.java)
+                    val intent_tmp = EditEtapeActivity.newIntent(this@AddEtapeActivity)
                     intent_tmp.putExtra(EXTRA_TYPE_ACTIVITY, "Add_etape")
                     intent_tmp.putExtra(EXTRA_POSITION_KEY, "" + arg3)
                     startActivityForResult(intent_tmp, 1)
@@ -128,7 +123,7 @@ abstract class AddEtapeActivity : AppCompatActivity() {
 
                 listView_add_etape.setOnItemClickListener(
                     fun(arg0: AdapterView<*>, arg1: View, position: Int, arg3: Long) {
-                        val intent_tmp = Intent(this@AddEtapeActivity, EditEtapeActivity::class.java)
+                        val intent_tmp = EditEtapeActivity.newIntent(this@AddEtapeActivity)
                         intent_tmp.putExtra(EXTRA_TYPE_ACTIVITY, "Add_etape")
                         intent_tmp.putExtra(EXTRA_POSITION_KEY, "" + arg3)
                         startActivityForResult(intent_tmp, 1)
@@ -142,15 +137,9 @@ abstract class AddEtapeActivity : AppCompatActivity() {
         when (view.id) {
             R.id.button_workout_add -> {
                 val parser = XMLDOMParser(this)
-                val manager = assets
-                val stream: InputStream
                 val stream_file: FileInputStream
                 var writer: FileWriter? = null
                 try {
-
-                    //stream = getResources().openRawResource(R.raw.total_list_workout);
-                    // pour ecrire sur sd
-
                     val file =
                         File(Environment.getExternalStorageDirectory().toString(), "/Workout/total_list_workout.xml")
                     if (file.length() == 0L) {
@@ -190,6 +179,12 @@ abstract class AddEtapeActivity : AppCompatActivity() {
             }
 
             R.id.button_back_addetp -> finish()
+        }
+    }
+
+    companion object {
+        fun newIntent(context: Context): Intent {
+            return Intent(context, AddEtapeActivity::class.java)
         }
     }
 }
