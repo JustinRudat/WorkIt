@@ -29,15 +29,15 @@ import java.io.IOException
  * Created by JustinRudat on 06/03/2019.
  */
 class ShowTrainingActivity : AppCompatActivity() {
-    internal val EXTRA_POSITION_CHOICE = "0"
-    internal val EXTRA_NOM_ETAPE = "etape_string"
-    internal val EXTRA_DESC_ETAPE = "desc_string"
-    internal val EXTRA_TEMPS_ETAPE = "temps_string"
-    internal val EXTRA_PAUSE_ETAPE = "pause_string"
-    internal val EXTRA_POSITION_KEY = "key_position"
-    internal val EXTRA_TYPE_ACTIVITY = "activity_type"
+    private val EXTRA_POSITION_CHOICE = "0"
+    private val EXTRA_NOM_ETAPE = "etape_string"
+    private val EXTRA_DESC_ETAPE = "desc_string"
+    private val EXTRA_TEMPS_ETAPE = "temps_string"
+    private val EXTRA_PAUSE_ETAPE = "pause_string"
+    private val EXTRA_POSITION_KEY = "key_position"
+    private val EXTRA_TYPE_ACTIVITY = "activity_type"
 
-    var test_tmp = 0
+    var testTmp = 0
     var isUp = false
 
 
@@ -75,14 +75,14 @@ class ShowTrainingActivity : AppCompatActivity() {
             stream_file = FileInputStream(file)
 
             val doc = parser.getDocument(stream_file)
-            val str_pos = intent.getStringExtra(EXTRA_POSITION_CHOICE)
+            val strPos = intent.getStringExtra(EXTRA_POSITION_CHOICE)
 
-            val position = Integer.parseInt(str_pos)
+            val position = Integer.parseInt(strPos)
 
             val nodeList = doc!!.getElementsByTagName("workout")
 
-            val final_workouts = parser.getXMLWorkoutValue(nodeList)
-            val wo_tmp = final_workouts[position]
+            val finalWorkouts = parser.getXMLWorkoutValue(nodeList)
+            val wo_tmp = finalWorkouts[position]
             if (textView_lrg_training_name != null) {
                 textView_lrg_training_name.text = wo_tmp.toString()
             }
@@ -93,7 +93,7 @@ class ShowTrainingActivity : AppCompatActivity() {
 
 
                 listView_show_training.onItemClickListener =
-                    AdapterView.OnItemClickListener { parent, view, position, id ->
+                    AdapterView.OnItemClickListener { _, view, _, id ->
                     val toast = Toast.makeText(applicationContext, "", Toast.LENGTH_LONG)
                     if (isUp) {
                         if (rel_layout_edit_train != null) {
@@ -121,10 +121,10 @@ class ShowTrainingActivity : AppCompatActivity() {
                         if (time_etape_view != null) {
                         toast.setText("GO")
                         toast.show()
-                            var timeEtapeView = time_etape_view as TimerView
-                            val tmr_etp_anim = TimerEtapeAnimation(timeEtapeView, 360)
-                        tmr_etp_anim.duration = (wo_tmp.list_etape[pos].temps * 1000).toLong()
-                        tmr_etp_anim.setAnimationListener(object : Animation.AnimationListener {
+                            val timeEtapeView = time_etape_view as TimerView
+                            val tmrEtpAnim = TimerEtapeAnimation(timeEtapeView, 360)
+                            tmrEtpAnim.duration = (wo_tmp.list_etape[pos].temps * 1000).toLong()
+                            tmrEtpAnim.setAnimationListener(object : Animation.AnimationListener {
                             override fun onAnimationStart(animation: Animation) {
 
                             }
@@ -135,9 +135,9 @@ class ShowTrainingActivity : AppCompatActivity() {
                                 toast.show()
                                 timeEtapeView.clearAnimation()
                                 timeEtapeView.angle = 0f
-                                val tmr_etp_anim_2 = TimerEtapeAnimation(timeEtapeView, 360)
-                                tmr_etp_anim_2.duration = (wo_tmp.list_etape[pos].pause * 1000).toLong()
-                                tmr_etp_anim_2.setAnimationListener(object : Animation.AnimationListener {
+                                val tmrEtpAnim2 = TimerEtapeAnimation(timeEtapeView, 360)
+                                tmrEtpAnim2.duration = (wo_tmp.list_etape[pos].pause * 1000).toLong()
+                                tmrEtpAnim2.setAnimationListener(object : Animation.AnimationListener {
                                     override fun onAnimationStart(animation: Animation) {}
 
                                     override fun onAnimationEnd(animation: Animation) {
@@ -147,10 +147,10 @@ class ShowTrainingActivity : AppCompatActivity() {
                                         toast.show()
                                         timeEtapeView.clearAnimation()
                                         timeEtapeView.angle = 0f
-                                        val tmr_etp_anim_3 = TimerEtapeAnimation(timeEtapeView, 360)
-                                        tmr_etp_anim_3.duration = 200
+                                        val tmrEtpAnim3 = TimerEtapeAnimation(timeEtapeView, 360)
+                                        tmrEtpAnim3.duration = 200
 
-                                        timeEtapeView.startAnimation(tmr_etp_anim_3)
+                                        timeEtapeView.startAnimation(tmrEtpAnim3)
                                         if (Build.VERSION.SDK_INT >= 16) {
                                             view.setHasTransientState(true)
                                         }
@@ -161,25 +161,25 @@ class ShowTrainingActivity : AppCompatActivity() {
                                     override fun onAnimationRepeat(animation: Animation) {}
                                 })
 
-                                timeEtapeView.startAnimation(tmr_etp_anim_2)
+                                timeEtapeView.startAnimation(tmrEtpAnim2)
                             }
 
                             override fun onAnimationRepeat(animation: Animation) {}
                         })
 
-                            timeEtapeView.startAnimation(tmr_etp_anim)
+                            timeEtapeView.startAnimation(tmrEtpAnim)
 
                     }
                 }
                 listView_show_training.onItemLongClickListener =
-                    AdapterView.OnItemLongClickListener { parent, view, position, id ->
+                    AdapterView.OnItemLongClickListener { _, _, _, id ->
                     if (Build.VERSION.SDK_INT >= 21) {
                         if (rel_layout_edit_train != null) {
                             rel_layout_edit_train.translationY = -200f
                             isUp = true
                         }
                     }
-                    test_tmp = id.toInt()
+                        testTmp = id.toInt()
                     true
                 }
             }
@@ -230,11 +230,11 @@ class ShowTrainingActivity : AppCompatActivity() {
                     if (file.length() != 0L) {
                         val nodeList = doc!!.getElementsByTagName("workout")
 
-                        val final_workouts = parser.getXMLWorkoutValue(nodeList)
-                        val workout = final_workouts[indice_workout]
+                        val finalWorkouts = parser.getXMLWorkoutValue(nodeList)
+                        val workout = finalWorkouts[indice_workout]
                         workout.list_etape[indice_key] = etap_tmp
-                        final_workouts[indice_workout] = workout
-                        parser.writeToSDCardWorkoutXML("", final_workouts)
+                        finalWorkouts[indice_workout] = workout
+                        parser.writeToSDCardWorkoutXML("", finalWorkouts)
 
 
                         val train_adap =
@@ -265,10 +265,10 @@ class ShowTrainingActivity : AppCompatActivity() {
                                     toast.show()
                                     val timeEtapeView = time_etape_view as TimerView
 
-                                    val tmr_etp_anim = TimerEtapeAnimation(timeEtapeView, 360)
-                                    tmr_etp_anim.duration =
+                                    val tmrEtpAnim = TimerEtapeAnimation(timeEtapeView, 360)
+                                    tmrEtpAnim.duration =
                                         (workout.list_etape[position].temps * 1000).toLong()
-                                    tmr_etp_anim.setAnimationListener(object : Animation.AnimationListener {
+                                    tmrEtpAnim.setAnimationListener(object : Animation.AnimationListener {
                                         override fun onAnimationStart(animation: Animation) {}
 
                                         override fun onAnimationEnd(animation: Animation) {
@@ -277,11 +277,11 @@ class ShowTrainingActivity : AppCompatActivity() {
                                             toast.show()
                                             timeEtapeView.clearAnimation()
                                             timeEtapeView.angle = 0f
-                                            val tmr_etp_anim_2 =
+                                            val tmrEtpAnim2 =
                                                 TimerEtapeAnimation(timeEtapeView, 360)
-                                            tmr_etp_anim_2.duration =
+                                            tmrEtpAnim2.duration =
                                                 (workout.list_etape[pos].pause * 1000).toLong()
-                                            tmr_etp_anim_2.setAnimationListener(object : Animation.AnimationListener {
+                                            tmrEtpAnim2.setAnimationListener(object : Animation.AnimationListener {
                                                 override fun onAnimationStart(animation: Animation) {}
 
                                                 override fun onAnimationEnd(animation: Animation) {
@@ -293,23 +293,23 @@ class ShowTrainingActivity : AppCompatActivity() {
                                                     toast.show()
                                                     timeEtapeView.clearAnimation()
                                                     timeEtapeView.angle = 0f
-                                                    val tmr_etp_anim_3 =
+                                                    val tmrEtpAnim3 =
                                                         TimerEtapeAnimation(timeEtapeView, 360)
-                                                    tmr_etp_anim_3.duration = 200
-                                                    timeEtapeView.startAnimation(tmr_etp_anim_3)
+                                                    tmrEtpAnim3.duration = 200
+                                                    timeEtapeView.startAnimation(tmrEtpAnim3)
 
                                                 }
 
                                                 override fun onAnimationRepeat(animation: Animation) {}
                                             })
 
-                                            timeEtapeView.startAnimation(tmr_etp_anim_2)
+                                            timeEtapeView.startAnimation(tmrEtpAnim2)
                                         }
 
                                         override fun onAnimationRepeat(animation: Animation) {}
                                     })
 
-                                    timeEtapeView.startAnimation(tmr_etp_anim)
+                                    timeEtapeView.startAnimation(tmrEtpAnim)
 
                                 }
                             }
@@ -321,7 +321,7 @@ class ShowTrainingActivity : AppCompatActivity() {
                                         isUp = true
                                     }
                                 }
-                                test_tmp = id.toInt()
+                                testTmp = id.toInt()
                                 true
                             }
                     }
@@ -380,7 +380,7 @@ class ShowTrainingActivity : AppCompatActivity() {
                     }
                 }
                 val intent = Intent(this@ShowTrainingActivity, EditEtapeActivity::class.java)
-                intent.putExtra(EXTRA_POSITION_KEY, "" + test_tmp)
+                intent.putExtra(EXTRA_POSITION_KEY, "" + testTmp)
                 intent.putExtra(EXTRA_TYPE_ACTIVITY, "transition")
                 intent.putExtra(EXTRA_POSITION_CHOICE, getIntent().getStringExtra(EXTRA_POSITION_CHOICE))
                 startActivityForResult(intent, 1)

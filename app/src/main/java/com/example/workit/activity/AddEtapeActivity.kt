@@ -33,7 +33,7 @@ class AddEtapeActivity : AppCompatActivity() {
     private val EXTRA_TYPE_ACTIVITY = "activity_type"
     private val EXTRA_POSITION_KEY = "key_position"
     var workout: Workout = Workout(0, "default")
-    internal var array_etape_tmp: ArrayList<String> = ArrayList()
+    private var arrayEtapeTmp: ArrayList<String> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,20 +49,20 @@ class AddEtapeActivity : AppCompatActivity() {
             for (i in 0 until workout.nbEtape) {
                 workout.list_etape.add(Etape("New Exercice", 0, 0))
             }
-            array_etape_tmp = ArrayList(workout.nbEtape)
+            arrayEtapeTmp = ArrayList(workout.nbEtape)
             for (i in 0 until workout.nbEtape) {
-                array_etape_tmp.add("New Exercice")
+                arrayEtapeTmp.add("New Exercice")
             }
 
             val array_adapt_tmp =
-                ArrayAdapter(this@AddEtapeActivity, android.R.layout.simple_list_item_1, array_etape_tmp)
+                ArrayAdapter(this@AddEtapeActivity, android.R.layout.simple_list_item_1, arrayEtapeTmp)
             listView_add_etape.adapter = array_adapt_tmp
             listView_add_etape.setOnItemClickListener(
                 fun(_: AdapterView<*>, _: View, _: Int, arg3: Long) {
-                    val intent_tmp = EditEtapeActivity.newIntent(this@AddEtapeActivity)
-                    intent_tmp.putExtra(EXTRA_TYPE_ACTIVITY, "Add_etape")
-                    intent_tmp.putExtra(EXTRA_POSITION_KEY, "" + arg3)
-                    startActivityForResult(intent_tmp, 1)
+                    val intentTmp = EditEtapeActivity.newIntent(this@AddEtapeActivity)
+                    intentTmp.putExtra(EXTRA_TYPE_ACTIVITY, "Add_etape")
+                    intentTmp.putExtra(EXTRA_POSITION_KEY, "" + arg3)
+                    startActivityForResult(intentTmp, 1)
 
                 }
             )
@@ -109,10 +109,10 @@ class AddEtapeActivity : AppCompatActivity() {
                 }
 
 
-                array_etape_tmp[workout.list_etape.indexOf(etap_tmp)] = etap_tmp.titre
+                arrayEtapeTmp[workout.list_etape.indexOf(etap_tmp)] = etap_tmp.titre
 
                 val array_adapt_tmp =
-                    ArrayAdapter(this@AddEtapeActivity, android.R.layout.simple_list_item_1, array_etape_tmp)
+                    ArrayAdapter(this@AddEtapeActivity, android.R.layout.simple_list_item_1, arrayEtapeTmp)
                 listView_add_etape.adapter = array_adapt_tmp
 
                 listView_add_etape.setOnItemClickListener(
@@ -132,7 +132,7 @@ class AddEtapeActivity : AppCompatActivity() {
             R.id.button_workout_add -> {
                 val parser = XMLDOMParser(this)
                 val streamFile: FileInputStream
-                var writer: FileWriter?
+                val writer: FileWriter?
                 try {
                     val file =
                         File(Environment.getExternalStorageDirectory().toString(), "/Workout/total_list_workout.xml")
@@ -140,9 +140,17 @@ class AddEtapeActivity : AppCompatActivity() {
 
                         writer = FileWriter(file)
                         writer.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
-                        writer.write("<workouts>\n<workout name_workout=\"" + workout.toString() + "\" nb_etape=\"" + workout.nbEtape + "\">\n")
+                        writer.write(
+                            "<workouts>\n<workout name_workout=\""
+                                    + workout.toString() + "\" nb_etape=\""
+                                    + workout.nbEtape + "\">\n"
+                        )
                         for (etp_tmp in workout.list_etape) {
-                            writer.write("<etape nom_eta=\"" + etp_tmp.titre + "\" desc_eta=\"" + etp_tmp.desc + "\" temps=\"" + etp_tmp.temps + "\" pause=\"" + etp_tmp.pause + "\"></etape>\n")
+                            writer.write(
+                                "<etape nom_eta=\"" + etp_tmp.titre + "\" desc_eta=\""
+                                        + etp_tmp.desc + "\" temps=\"" + etp_tmp.temps + "\" pause=\""
+                                        + etp_tmp.pause + "\"></etape>\n"
+                            )
                         }
                         writer.write("</workout>\n</workouts>\n")
                         writer.flush()

@@ -22,7 +22,7 @@ import java.util.*
  * Created by JustinRudat on 06/03/2019.
  */
 class ShowWorkActivity : AppCompatActivity() {
-    internal val EXTRA_POSITION_CHOICE = "0"
+    private val EXTRA_POSITION_CHOICE = "0"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_showork)
@@ -44,27 +44,25 @@ class ShowWorkActivity : AppCompatActivity() {
             if (file.length() != 0L) {
                 val nodeList = doc!!.getElementsByTagName("workout")
 
-                val final_workouts = parser.getXMLWorkoutValue(nodeList)
-                Collections.sort(
-                    final_workouts
-                ) { o1, o2 -> o1.toString().compareTo(o2.toString()) }
+                val finalWorkouts = parser.getXMLWorkoutValue(nodeList)
+                Collections.sort(finalWorkouts) { o1, o2 -> o1.toString().compareTo(o2.toString()) }
 
-                val adapter = WorkoutAdapter(this@ShowWorkActivity, final_workouts)
+                val adapter = WorkoutAdapter(this@ShowWorkActivity, finalWorkouts)
                 if (workoutListView != null) {
                     workoutListView.onItemClickListener = AdapterView.OnItemClickListener(fun(
-                        arg0: AdapterView<*>,
-                        arg1: View,
-                        position: Int,
+                        _: AdapterView<*>,
+                        _: View,
+                        _: Int,
                         arg3: Long
                     ) {
                         val intent = Intent(this@ShowWorkActivity, ShowTrainingActivity::class.java)
-                        val str_tmp = "" + arg3
-                        intent.putExtra(EXTRA_POSITION_CHOICE, str_tmp)
+                        val strTmp = "" + arg3
+                        intent.putExtra(EXTRA_POSITION_CHOICE, strTmp)
                         startActivity(intent)
                     })
 
                     workoutListView.onItemLongClickListener =
-                        AdapterView.OnItemLongClickListener { parent, view, position, id ->
+                        AdapterView.OnItemLongClickListener { _, _, _, id ->
                             if (imageButton_delete != null) {
                                 if (imageButton_delete.visibility == View.INVISIBLE) {
                                     imageButton_delete.visibility = View.VISIBLE
@@ -72,8 +70,8 @@ class ShowWorkActivity : AppCompatActivity() {
                                     imageButton_delete.visibility = View.INVISIBLE
                             }
                         }
-                        val str_tmp = "" + id
-                        intent.putExtra(EXTRA_POSITION_CHOICE, str_tmp)
+                            val strTmp = "" + id
+                            intent.putExtra(EXTRA_POSITION_CHOICE, strTmp)
                         true
                     }
                     workoutListView.adapter = adapter
@@ -122,12 +120,12 @@ class ShowWorkActivity : AppCompatActivity() {
 
                 println(intent.getStringExtra(EXTRA_POSITION_CHOICE))
 
-                val array_wo_tmp =
+                val arrayWorkoutTmp =
                     parser.deleteWorkoutByNumber(Integer.parseInt(intent.getStringExtra(EXTRA_POSITION_CHOICE)), v)
-                val wo_adapt_tmp = workoutListView.adapter as WorkoutAdapter
-                wo_adapt_tmp.clear()
-                wo_adapt_tmp.addAll(array_wo_tmp!!)
-                wo_adapt_tmp.notifyDataSetChanged()
+                val workoutAdaptTmp = workoutListView.adapter as WorkoutAdapter
+                workoutAdaptTmp.clear()
+                workoutAdaptTmp.addAll(arrayWorkoutTmp!!)
+                workoutAdaptTmp.notifyDataSetChanged()
 
                 imageButton_delete.visibility = View.INVISIBLE
             }

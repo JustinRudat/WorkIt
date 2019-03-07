@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.content_addworkout.*
  * Created by JustinRudat on 06/03/2019.
  */
 class AddWorkoutActivity : AppCompatActivity() {
-    internal val EXTRA_NOM_WORKOUT = "nom_du_workout"
-    internal val EXTRA_NOMBRE_ETAPES = "nombre_d_etape"
+    private val EXTRA_NOM_WORKOUT = "nom_du_workout"
+    private val EXTRA_NOMBRE_ETAPES = "nombre_d_etape"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addworkout)

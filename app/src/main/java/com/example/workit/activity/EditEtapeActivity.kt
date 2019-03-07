@@ -10,23 +10,20 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.example.workit.R
-import com.example.workit.data.Etape
 import kotlinx.android.synthetic.main.content_editetape.*
 
 /**
  * Created by JustinRudat on 06/03/2019.
  */
 class EditEtapeActivity : AppCompatActivity() {
-    internal val EXTRA_NOM_ETAPE = "etape_string"
-    internal val EXTRA_DESC_ETAPE = "desc_string"
-    internal val EXTRA_TEMPS_ETAPE = "temps_string"
-    internal val EXTRA_PAUSE_ETAPE = "pause_string"
-    internal val EXTRA_POSITION_KEY = "key_position"
-    internal val EXTRA_TYPE_ACTIVITY = "activity_type"
-    internal val EXTRA_POSITION_CHOICE = "0"
+    private val EXTRA_NOM_ETAPE = "etape_string"
+    private val EXTRA_DESC_ETAPE = "desc_string"
+    private val EXTRA_TEMPS_ETAPE = "temps_string"
+    private val EXTRA_PAUSE_ETAPE = "pause_string"
+    private val EXTRA_POSITION_KEY = "key_position"
+    private val EXTRA_TYPE_ACTIVITY = "activity_type"
+    private val EXTRA_POSITION_CHOICE = "0"
 
-
-    var etape_tmp: Etape? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

@@ -25,18 +25,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        checkStoragePermission();
+        checkStoragePermission()
         val f1 = File(Environment.getExternalStorageDirectory().toString() + File.separator + "Workout")
         f1.mkdirs()
-        //String str=Environment.getExternalStorageDirectory().toString()+File.separator+"Workout"+File.separator+"total_list_workout.xml";
         val file = File(Environment.getExternalStorageDirectory().toString(), "/Workout/total_list_workout.xml")
         try {
-            val try_test = file.createNewFile()
-            if (try_test) {
-                var file_ouput: FileWriter;
-                file_ouput = FileWriter(file)
-                file_ouput.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
-                file_ouput.write(
+            val tryTest = file.createNewFile()
+            if (tryTest) {
+                val fileOuput = FileWriter(file)
+                fileOuput.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+                fileOuput.write(
                     "<workouts><workout name_workout=\"le Nom\" nb_etape=\"3\">\n" +
                             "        <etape nom_eta=\"Etapeux\" desc_eta=\"ne rien faire\" temps=\"30\" pause=\"45\"></etape>\n" +
                             "        <etape nom_eta=\"Etapeux2\" desc_eta=\"ne rien faire\" temps=\"30\" pause=\"45\"></etape>\n" +
@@ -51,25 +49,25 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun checkStoragePermission(): Boolean {
-        var TAG = "";
+    private fun checkStoragePermission(): Boolean {
+        val tag = ""
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
                     android.Manifest.permission.READ_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                Log.v(TAG, "Permission is granted")
+                Log.v(tag, "Permission is granted")
                 return true
             } else {
 
-                Log.v(TAG, "Permission is revoked")
+                Log.v(tag, "Permission is revoked")
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
                 return false
             }
 
         } else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG, "Permission is granted")
+            Log.v(tag, "Permission is granted")
             return true
         }
     }
