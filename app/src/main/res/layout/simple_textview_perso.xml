@@ -49,7 +49,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView_name_etape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.03"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.0"
             />
 
@@ -73,8 +73,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.005"
-            app:layout_constraintVertical_bias="0.088"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.09"
             />
 
     <TextView
@@ -111,14 +111,12 @@
             android:layout_alignTop="@+id/textView"
             android:layout_alignLeft="@+id/textView_pause_etape"
             android:layout_alignStart="@+id/textView_pause_etape"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.087"
+            app:layout_constraintVertical_bias="0.101"
             />
 
     <TextView
@@ -132,24 +130,20 @@
             android:layout_alignBottom="@+id/textView_desc_etape"
             android:layout_toLeftOf="@+id/time_etape_view"
             android:layout_toStartOf="@+id/time_etape_view"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="128dp"
+            android:layout_marginRight="128dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toBottomOf="@+id/textView_temps_etape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.016"
+            app:layout_constraintVertical_bias="0.0"
             />
 
     <com.example.workit.tools.TimerView
             android:id="@+id/time_etape_view"
-            android:layout_height="90dp"
-            android:layout_width="90dp"
+            android:layout_height="117dp"
+            android:layout_width="112dp"
 
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
@@ -165,7 +159,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintVertical_bias="0.571"
+            app:layout_constraintVertical_bias="0.461"
             />
 
     <TextView
