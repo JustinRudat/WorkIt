@@ -3,7 +3,6 @@ package com.example.workit.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +10,8 @@ import android.view.View
 import android.widget.AdapterView
 import com.example.workit.R
 import com.example.workit.adapter.WorkoutAdapter
+import com.example.workit.tools.EnumTool.STORAGE_PATH.internal
+import com.example.workit.tools.EnumTool.STORAGE_PATH.shortlocalpath
 import com.example.workit.tools.XMLDOMParser
 import kotlinx.android.synthetic.main.content_showork.*
 import kotlinx.android.synthetic.main.white_text_cell.*
@@ -36,7 +37,7 @@ class ShowWorkActivity : AppCompatActivity() {
             //stream = getResources().openRawResource(R.raw.total_list_workout);
             // pour ecrire sur sd
 
-            val file = File(Environment.getExternalStorageDirectory().toString() + "/Workout/total_list_workout.xml")
+            val file = File(internal + shortlocalpath)
             stream_file = FileInputStream(file)
 
             val doc = parser.getDocument(stream_file)
@@ -66,14 +67,14 @@ class ShowWorkActivity : AppCompatActivity() {
                             if (imageButton_delete != null) {
                                 if (imageButton_delete.visibility == View.INVISIBLE) {
                                     imageButton_delete.visibility = View.VISIBLE
-                            } else {
+                                } else {
                                     imageButton_delete.visibility = View.INVISIBLE
+                                }
                             }
-                        }
                             val strTmp = "" + id
                             intent.putExtra(EXTRA_POSITION_CHOICE, strTmp)
-                        true
-                    }
+                            true
+                        }
                     workoutListView.adapter = adapter
 
                 }
@@ -110,7 +111,6 @@ class ShowWorkActivity : AppCompatActivity() {
             button_back_showork -> finish()
         }
     }
-
 
 
     fun buttonLongPressed(v: View) {

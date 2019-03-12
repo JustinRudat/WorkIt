@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -12,6 +11,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.example.workit.R
+import com.example.workit.tools.EnumTool.STORAGE_PATH.internal
+import com.example.workit.tools.EnumTool.STORAGE_PATH.shortlocalpath
 import kotlinx.android.synthetic.main.content_main.*
 import java.io.File
 import java.io.FileWriter
@@ -26,9 +27,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         checkStoragePermission()
-        val f1 = File(Environment.getExternalStorageDirectory().toString() + File.separator + "Workout")
+
+        val f1 = File(internal + File.separator + "Workout")
+        println(internal + File.separator + "Workout")
         f1.mkdirs()
-        val file = File(Environment.getExternalStorageDirectory().toString(), "/Workout/total_list_workout.xml")
+        val file = File(internal, shortlocalpath)
         try {
             val tryTest = file.createNewFile()
             if (tryTest) {
@@ -52,14 +55,12 @@ class MainActivity : AppCompatActivity() {
     private fun checkStoragePermission(): Boolean {
         val tag = ""
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
             ) {
                 Log.v(tag, "Permission is granted")
                 return true
             } else {
-
                 Log.v(tag, "Permission is revoked")
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
@@ -74,33 +75,25 @@ class MainActivity : AppCompatActivity() {
 
 
     fun buttonPressed(view: View) {
-        print("HEY")
         when (view) {
             showWorkout -> {
                 val intent = ShowWorkActivity.newIntent(this@MainActivity)
                 startActivity(intent)
             }
             addWorkout -> {
-                print("YO")
                 val intent = AddWorkoutActivity.newIntent(this@MainActivity)
                 startActivity(intent)
             }
-            button_quit -> finish()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
-
 
         return if (id == R.id.action_settings) {
             true

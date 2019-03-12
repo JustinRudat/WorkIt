@@ -3,7 +3,6 @@ package com.example.workit.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +13,8 @@ import android.widget.Toast
 import com.example.workit.R
 import com.example.workit.data.Etape
 import com.example.workit.data.Workout
+import com.example.workit.tools.EnumTool.STORAGE_PATH.internal
+import com.example.workit.tools.EnumTool.STORAGE_PATH.shortlocalpath
 import com.example.workit.tools.XMLDOMParser
 import kotlinx.android.synthetic.main.content_addetape.*
 import java.io.File
@@ -41,7 +42,7 @@ class AddEtapeActivity : AppCompatActivity() {
 
         if (intent != null) {
             textView1_add_etape.text = intent.getStringExtra(EXTRA_NOM_WORKOUT)
-            textView2_add_etape.text = intent.getStringExtra(EXTRA_NOMBRE_ETAPES) + " exercices."
+            // textView2_add_etape.text = intent.getStringExtra(EXTRA_NOMBRE_ETAPES) + " exercices."
             workout = Workout(
                 Integer.parseInt(intent.getStringExtra(EXTRA_NOMBRE_ETAPES)),
                 intent.getStringExtra(EXTRA_NOM_WORKOUT)
@@ -128,14 +129,15 @@ class AddEtapeActivity : AppCompatActivity() {
     }
 
     fun buttonPressed(view: View) {
-        when (view.id) {
-            R.id.button_workout_add -> {
+        when (view) {
+            button_workout_add -> {
+                println(arrayEtapeTmp.size)
                 val parser = XMLDOMParser(this)
                 val streamFile: FileInputStream
                 val writer: FileWriter?
                 try {
                     val file =
-                        File(Environment.getExternalStorageDirectory().toString(), "/Workout/total_list_workout.xml")
+                        File(internal, shortlocalpath)
                     if (file.length() == 0L) {
 
                         writer = FileWriter(file)
@@ -165,7 +167,7 @@ class AddEtapeActivity : AppCompatActivity() {
                         final_workouts.add(workout)
 
                         parser.writeToSDCardWorkoutXML(
-                            Environment.getExternalStorageDirectory().toString() + "Workout/total_list_workout.xml",
+                            internal + shortlocalpath,
                             final_workouts
                         )
                     }
@@ -179,7 +181,7 @@ class AddEtapeActivity : AppCompatActivity() {
                 // fin parseur
             }
 
-            R.id.button_back_addetp -> finish()
+            button_back_addetp -> finish()
         }
     }
 

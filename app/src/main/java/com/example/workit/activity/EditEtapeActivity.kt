@@ -3,7 +3,6 @@ package com.example.workit.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.text.InputFilter
 import android.view.Menu
 import android.view.MenuItem
@@ -15,7 +14,7 @@ import kotlinx.android.synthetic.main.content_editetape.*
 /**
  * Created by JustinRudat on 06/03/2019.
  */
-class EditEtapeActivity : AppCompatActivity() {
+class EditEtapeActivity : EditActivity() {
     private val EXTRA_NOM_ETAPE = "etape_string"
     private val EXTRA_DESC_ETAPE = "desc_string"
     private val EXTRA_TEMPS_ETAPE = "temps_string"
@@ -41,17 +40,12 @@ class EditEtapeActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
-
 
         return if (id == R.id.action_settings) {
             true
@@ -60,10 +54,8 @@ class EditEtapeActivity : AppCompatActivity() {
     }
 
     fun buttonPressed(view: View) {
-        when (view.id) {
-            R.id.button_back_edit -> finish()
-
-            R.id.button_etape_add -> {
+        when (view) {
+            button_etape_add -> {
                 val position_key = Integer.parseInt(intent.getStringExtra(EXTRA_POSITION_KEY))
                 val position_workout = intent.getStringExtra(EXTRA_POSITION_CHOICE)
                 val intent: Intent

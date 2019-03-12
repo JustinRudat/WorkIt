@@ -3,7 +3,6 @@ package com.example.workit.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.text.InputFilter
 import android.view.Menu
 import android.view.MenuItem
@@ -15,13 +14,13 @@ import kotlinx.android.synthetic.main.content_addworkout.*
 /**
  * Created by JustinRudat on 06/03/2019.
  */
-class AddWorkoutActivity : AppCompatActivity() {
+class AddWorkoutActivity : EditActivity() {
     private val EXTRA_NOM_WORKOUT = "nom_du_workout"
     private val EXTRA_NOMBRE_ETAPES = "nombre_d_etape"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addworkout)
-        val filter = InputFilter { source, start, end, dest, dstart, dend ->
+        val filter = InputFilter { source, _, _, _, _, _ ->
             val blockCharacterSet = "&~#^|$%*!@/()'\"\\:;,?{}<>=!$^';,?×÷{}€£¥₩%~`¤♡♥|《》¡¿°•○●□■◇◆♧♣▲▼▶◀↑↓←→☆★▪"
             if (source != null && blockCharacterSet.contains("" + source)) {
                 ""
@@ -29,11 +28,6 @@ class AddWorkoutActivity : AppCompatActivity() {
         }
         new_training_name.filters = arrayOf(filter)
 
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        finish()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -54,31 +48,27 @@ class AddWorkoutActivity : AppCompatActivity() {
     }
 
     fun buttonPressed(view: View) {
-        when (view.id) {
-            R.id.button_back_addwork -> finish()
-
-            R.id.add_etape_workout_button -> {
-                val toast = Toast.makeText(applicationContext, "", Toast.LENGTH_SHORT)
-                if (new_training_name != null && nombre_d_etape != null) {
-                    if (new_training_name.text.toString() == "") {
-                        toast.setText("Name missing")
-                        toast.show()
-                    } else
-                        if (nombre_d_etape.text.toString() == "" || Integer.parseInt(nombre_d_etape.text.toString()) == 0) {
-                            toast.setText("No exercices for a training ?\n Are you sure about that ?")
-                            toast.show()
-                        } else {
-                            val intent = AddEtapeActivity.newIntent(this@AddWorkoutActivity)
-                            intent.putExtra(EXTRA_NOM_WORKOUT, new_training_name.text.toString())
-                            intent.putExtra(EXTRA_NOMBRE_ETAPES, nombre_d_etape.text.toString())
-                            startActivity(intent)
-                        }
-                } else {
-                    toast.setText("Data missing, please check again")
+        val toast = Toast.makeText(applicationContext, "", Toast.LENGTH_SHORT)
+        if (new_training_name != null && nombre_d_etape != null) {
+            if (new_training_name.text.toString() == "") {
+                toast.setText("Name missing")
+                toast.show()
+            } else
+                if (nombre_d_etape.text.toString() == "" || Integer.parseInt(nombre_d_etape.text.toString()) == 0) {
+                    toast.setText("No exercices for a training ?\n Are you sure about that ?")
                     toast.show()
+                } else {
+                    val intent = AddEtapeActivity.newIntent(this@AddWorkoutActivity)
+                    intent.putExtra(EXTRA_NOM_WORKOUT, new_training_name.text.toString())
+                    intent.putExtra(EXTRA_NOMBRE_ETAPES, nombre_d_etape.text.toString())
+                    startActivity(intent)
                 }
-            }
+        } else {
+            toast.setText("Data missing, please check again")
+            toast.show()
         }
+
+
     }
 
     companion object {

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -16,6 +15,8 @@ import android.widget.Toast
 import com.example.workit.R
 import com.example.workit.adapter.TrainingAdapter
 import com.example.workit.data.Etape
+import com.example.workit.tools.EnumTool.STORAGE_PATH.internal
+import com.example.workit.tools.EnumTool.STORAGE_PATH.shortlocalpath
 import com.example.workit.tools.TimerEtapeAnimation
 import com.example.workit.tools.TimerView
 import com.example.workit.tools.XMLDOMParser
@@ -71,7 +72,7 @@ class ShowTrainingActivity : AppCompatActivity() {
             //stream = getResources().openRawResource(R.raw.total_list_workout);
             // pour ecrire sur sd
 
-            val file = File(Environment.getExternalStorageDirectory().toString() + "/Workout/total_list_workout.xml")
+            val file = File(internal + shortlocalpath)
             stream_file = FileInputStream(file)
 
             val doc = parser.getDocument(stream_file)
@@ -222,7 +223,7 @@ class ShowTrainingActivity : AppCompatActivity() {
                         Etape(name_etape_tmp, desc_etape_tmp, temps_etape_tmp, pause_etape_tmp)
                     val indice_workout = Integer.parseInt(getIntent().getStringExtra(EXTRA_POSITION_CHOICE))
                     val file =
-                        File(Environment.getExternalStorageDirectory().toString() + "/Workout/total_list_workout.xml")
+                        File(internal + shortlocalpath)
                     val stream_file = FileInputStream(file)
                     val parser = XMLDOMParser(applicationContext)
                     val doc = parser.getDocument(stream_file)
