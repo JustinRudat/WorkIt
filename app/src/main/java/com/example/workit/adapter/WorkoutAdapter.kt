@@ -10,34 +10,34 @@ import com.example.workit.R
 import com.example.workit.data.Workout
 
 /**
- * Created by juju_ on 23/08/2016.
+ * Created by Created by JustinRudat on 06/03/2019.
  */
-class WorkoutAdapter//tweets est la liste des models à afficher
+class WorkoutAdapter
     (context: Context, list_workout: List<Workout>) :
     ArrayAdapter<Workout>(context, R.layout.white_text_cell, list_workout) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var convertView = convertView
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.white_text_cell, parent, false)
+        var convertViewTmp = convertView
+        if (convertViewTmp == null) {
+            convertViewTmp = LayoutInflater.from(context).inflate(R.layout.white_text_cell, parent, false)
         }
-        val wo_tmp = getItem(position)
+        val woTmp = getItem(position)
 
         val viewHolder = WorkoutViewHolder()
 
-        viewHolder.nom_workout = convertView!!.findViewById<View>(R.id.textView_nom_showork) as TextView
-        viewHolder.nb_etp_workout = convertView.findViewById<View>(R.id.textView_nb_etp_showork) as TextView
-        viewHolder.nom_workout!!.text = wo_tmp!!.toString()
-        viewHolder.nb_etp_workout!!.text = "" + wo_tmp.nbEtape
+        viewHolder.nomWorkout = convertViewTmp!!.findViewById<View>(R.id.textView_nom_showork) as TextView
+        viewHolder.nbEtpWorkout = convertViewTmp.findViewById<View>(R.id.textView_nb_etp_showork) as TextView
+        viewHolder.nomWorkout!!.text = woTmp!!.toString()
+        viewHolder.nbEtpWorkout!!.text = "" + woTmp.nbEtape
 
-        convertView.tag = viewHolder
+        convertViewTmp.tag = viewHolder
 
-        return convertView
+        return convertViewTmp
     }
 
     private inner class WorkoutViewHolder {
-        var nom_workout: TextView? = null
-        var nb_etp_workout: TextView? = null
+        var nomWorkout: TextView? = null
+        var nbEtpWorkout: TextView? = null
 
 
     }

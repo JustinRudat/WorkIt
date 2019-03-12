@@ -11,7 +11,7 @@ import com.example.workit.data.Etape
 import com.example.workit.tools.TimerEtapeAnimation
 
 /**
- * Created by juju_ on 23/08/2016.
+ * Created by JustinRudat on 06/03/20196.
  */
 class TrainingAdapter//tweets est la liste des models à afficher
     (context: Context, etape: List<Etape>) : ArrayAdapter<Etape>(context, R.layout.simple_textview_perso, etape) {
