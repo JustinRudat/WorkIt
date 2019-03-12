@@ -1,7 +1,7 @@
 package com.example.workit.data
 
 /**
- * Created by juju_ on 19/08/2016.
+ * Created by JustinRudat on 06/03/2019.
  */
 class Etape {
     var titre: String

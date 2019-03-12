@@ -3,7 +3,7 @@ package com.example.workit.data
 import java.util.*
 
 /**
- * Created by juju_ on 19/08/2016.
+ * Created by JustinRudat on 06/03/2019.
  */
 class Workout(var nbEtape: Int, var nom: String) {
     var timer: Timer
