@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 
 /**
- * Created by juju_ on 23/08/2016.
+ * Created by JustinRudat on 06/03/2019.
  */
 class TimerView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 

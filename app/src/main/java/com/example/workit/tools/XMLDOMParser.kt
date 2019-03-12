@@ -1,7 +1,7 @@
 package com.example.workit.tools
 
 /**
- * Created by juju_ on 19/08/2016.
+ * Created by JustinRudat on 06/03/2019.
  */
 
 import android.content.Context
@@ -10,6 +10,8 @@ import android.util.Log
 import android.view.View
 import com.example.workit.data.Etape
 import com.example.workit.data.Workout
+import com.example.workit.tools.EnumTool.STORAGE_PATH.internal
+import com.example.workit.tools.EnumTool.STORAGE_PATH.shortlocalpath
 import org.w3c.dom.*
 import org.xml.sax.InputSource
 import org.xml.sax.SAXException
@@ -48,8 +50,8 @@ class XMLDOMParser(var c: Context) {
 
         val workouts = ArrayList<Workout>(nodes.length)
 
-        var nnm: NamedNodeMap
-        var nnm_tmp: NamedNodeMap
+        var nodeNamedMap: NamedNodeMap
+        var nodeNamedMapTmp: NamedNodeMap
         var children: NodeList
         var int_nb_etape: Int
         var int_temps_etape: Int
@@ -65,11 +67,11 @@ class XMLDOMParser(var c: Context) {
         for (i in 0 until nodes.length) {
             node = nodes.item(i)
 
-            nnm = node.attributes
+            nodeNamedMap = node.attributes
             val tmp_attr1: Attr
             val tmp_attr2: Attr
-            tmp_attr1 = nnm.getNamedItem("nb_etape") as Attr
-            tmp_attr2 = nnm.getNamedItem("name_workout") as Attr
+            tmp_attr1 = nodeNamedMap.getNamedItem("nb_etape") as Attr
+            tmp_attr2 = nodeNamedMap.getNamedItem("name_workout") as Attr
 
             int_nb_etape = Integer.parseInt(tmp_attr1.value)
             str_nom_workout = tmp_attr2.value
@@ -84,13 +86,13 @@ class XMLDOMParser(var c: Context) {
                     val tmp_attr5: Attr
                     val tmp_attr6: Attr
                     tmp_nod = children.item(j)
-                    nnm_tmp = tmp_nod.attributes
+                    nodeNamedMapTmp = tmp_nod.attributes
                     //
                     //
-                    tmp_attr3 = nnm_tmp.getNamedItem("nom_eta") as Attr
-                    tmp_attr4 = nnm_tmp.getNamedItem("desc_eta") as Attr
-                    tmp_attr5 = nnm_tmp.getNamedItem("temps") as Attr
-                    tmp_attr6 = nnm_tmp.getNamedItem("pause") as Attr
+                    tmp_attr3 = nodeNamedMapTmp.getNamedItem("nom_eta") as Attr
+                    tmp_attr4 = nodeNamedMapTmp.getNamedItem("desc_eta") as Attr
+                    tmp_attr5 = nodeNamedMapTmp.getNamedItem("temps") as Attr
+                    tmp_attr6 = nodeNamedMapTmp.getNamedItem("pause") as Attr
                     str_titre_etape = tmp_attr3.value
                     str_desc_etape = tmp_attr4.value
                     int_temps_etape = Integer.parseInt(tmp_attr5.value)
@@ -111,24 +113,28 @@ class XMLDOMParser(var c: Context) {
     fun writeToSDCardWorkoutXML(fileName: String, arrayworkout: ArrayList<Workout>) {
         var fileName = fileName
         if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-            fileName = "total_list_workout"
             var writer: FileWriter? = null
-            var wo_tmp: Workout
-            var etp_tmp: Etape
+            var workoutTmp: Workout
+            var etapeTmp: Etape
             try {
-                val directory = Environment.getExternalStorageDirectory()
-                val file = File("$directory/Workout/total_list_workout.xml")
+                val file = File(internal, shortlocalpath)
 
                 writer = FileWriter(file)
                 writer.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
                 writer.write("<workouts>\n")
                 for (i in arrayworkout.indices) {
-                    wo_tmp = arrayworkout[i]
-                    writer.write("<workout name_workout=\"" + wo_tmp.toString() + "\" nb_etape=\"" + wo_tmp.nbEtape + "\">\n")
-                    println(wo_tmp.toString())
-                    for (j in 0 until wo_tmp.nbEtape) {
-                        etp_tmp = wo_tmp.list_etape.get(j)
-                        writer.write("<etape nom_eta=\"" + etp_tmp.titre + "\" desc_eta=\"" + etp_tmp.desc + "\" temps=\"" + etp_tmp.temps + "\" pause=\"" + etp_tmp.pause + "\"></etape>\n")
+                    workoutTmp = arrayworkout[i]
+                    writer.write(
+                        "<workout name_workout=\"" + workoutTmp.toString()
+                                + "\" nb_etape=\"" + workoutTmp.nbEtape + "\">\n"
+                    )
+                    println(workoutTmp.toString())
+                    for (j in 0 until workoutTmp.nbEtape) {
+                        etapeTmp = workoutTmp.list_etape.get(j)
+                        writer.write(
+                            "<etape nom_eta=\"" + etapeTmp.titre + "\" desc_eta=\"" + etapeTmp.desc
+                                    + "\" temps=\"" + etapeTmp.temps + "\" pause=\"" + etapeTmp.pause + "\"></etape>\n"
+                        )
                     }
                     writer.write("</workout>\n")
                 }
@@ -151,17 +157,17 @@ class XMLDOMParser(var c: Context) {
 
     fun deleteWorkoutByNumber(indice: Int, v: View): ArrayList<Workout>? {
         try {
-            val file = File(Environment.getExternalStorageDirectory().toString() + "/Workout/total_list_workout.xml")
-            val stream_file = FileInputStream(file)
-            val doc = getDocument(stream_file)
+            val file = File(internal + shortlocalpath)
+            val streamFile = FileInputStream(file)
+            val doc = getDocument(streamFile)
             val nodeList = doc!!.getElementsByTagName("workout")
-            val final_workouts = getXMLWorkoutValue(nodeList)
+            val finalWorkouts = getXMLWorkoutValue(nodeList)
             Collections.sort(
-                final_workouts
+                finalWorkouts
             ) { o1, o2 -> o1.toString().compareTo(o2.toString()) }
-            final_workouts.removeAt(indice)
-            writeToSDCardWorkoutXML("", final_workouts)
-            return final_workouts
+            finalWorkouts.removeAt(indice)
+            writeToSDCardWorkoutXML("", finalWorkouts)
+            return finalWorkouts
 
 
         } catch (e: IOException) {

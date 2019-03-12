@@ -4,7 +4,7 @@ import android.view.animation.Animation
 import android.view.animation.Transformation
 
 /**
- * Created by juju_ on 23/08/2016.
+ * Created by JustinRudat on 06/03/2019.
  */
 class TimerEtapeAnimation(private val circle: TimerView, newAngle: Int) : Animation() {
 
